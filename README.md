@@ -1,40 +1,42 @@
-# 🎓 Student Event Participation Dashboard
+# Student Event Dashboard 🎓📊
 
-A full-stack web app that allows students to register, log in, and track participation in various events. Built using ReactJS, Node.js, and MySQL with JWT authentication.
+A full-stack web application for managing and monitoring student event participation. Built using **ReactJS**, **Node.js**, **Express**, and **MySQL**.
 
-## 🌟 Features
+---
 
-- Signup/Login with JWT
-- Dashboard to display student activities
-- Light/Dark mode ready layout
-- Netflix-themed UI using custom CSS
-- Backend validation and secure password hashing
+## 📌 Features
 
-## 🧰 Tech Stack
+- 👤 User authentication (login/register)
+- 🗓️ View and manage upcoming student events
+- 📈 Dashboard with participation stats
+- 📤 Upload event photos
+- 🔒 Secure with session handling and role-based access
+- 📱 Fully responsive and mobile-friendly
 
-- Frontend: ReactJS, React Router, Axios
-- Backend: Node.js, Express
-- Database: MySQL
-- Security: bcrypt, JWT
+---
 
-## 🚀 Getting Started
+## 🚀 Tech Stack
 
+**Frontend:** ReactJS  
+**Backend:** Node.js + Express  
+**Database:** MySQL  
+**Other:** Bootstrap, Axios, bcrypt, JWT
 
-```bash
-# Backend
-cd server
-npm install
-node index.js
+---
 
-# Frontend
-cd client
-npm install
-npm start
-## Screenshots
+## 🖼️ Screenshots
 
 ### 🔐 Login Page
 ![Login](screenshots/login.png)
 
-### 📊 Dashboard
+### 📊 Dashboard Page
 ![Dashboard](screenshots/dashboard.png)
 
+---
+
+## 🛠️ Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/manikantavarma2889/student-event-dashboard.git
+   cd student-event-dashboard
