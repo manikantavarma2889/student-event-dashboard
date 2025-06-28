@@ -27,10 +27,10 @@ A full-stack web application for managing and monitoring student event participa
 ## 🖼️ Screenshots
 
 ### 🔐 Login Page
-![Login](screenshots/login.png)
+![Login](screenshots/Login.png)
 
 ### 📊 Dashboard Page
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/Dashboard.png)
 
 ---
 
