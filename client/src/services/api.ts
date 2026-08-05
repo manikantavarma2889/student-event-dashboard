@@ -148,6 +148,24 @@ export const api = {
     return res.json();
   },
 
+  sendOtp: async (email: string, role: string) => {
+    const res = await fetch(`${API_BASE_URL}/auth/send-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, role })
+    });
+    return res.json();
+  },
+
+  verifyOtp: async (email: string, otp: string) => {
+    const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp })
+    });
+    return res.json();
+  },
+
   getMe: async () => {
     const res = await fetch(`${API_BASE_URL}/auth/me`, { headers: getHeaders() });
     return res.json();

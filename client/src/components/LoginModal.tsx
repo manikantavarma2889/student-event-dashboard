@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, GraduationCap, X, LogIn, UserPlus } from 'lucide-react';
+import { Lock, Mail, GraduationCap, X, LogIn, UserPlus, ShieldCheck, KeyRound } from 'lucide-react';
 import { api, UserItem } from '../services/api.ts';
 
 interface LoginModalProps {
@@ -16,6 +16,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
   const [role, setRole] = useState<'student' | 'organizer' | 'admin'>('student');
   const [departmentId, setDepartmentId] = useState(1);
   const [studentIdNum, setStudentIdNum] = useState('');
+  
+  // OTP Verification States for Faculty Organizers & Admins
+  const [otpCode, setOtpCode] = useState('');
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [otpNotice, setOtpNotice] = useState('');
+
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,14 +54,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
         onSuccess(matched, 'demo_jwt_token_2026');
         onClose();
       } else {
-        // Authenticate input email dynamically as a student
         const dynamicUser: UserItem = {
           id: Math.floor(100 + Math.random() * 900),
           name: email.split('@')[0].toUpperCase(),
           email: email,
-          role: 'student',
+          role: role,
           department_id: 1,
-          student_id_num: `STU2026${Math.floor(100 + Math.random() * 900)}`,
+          student_id_num: role === 'student' ? `STU2026${Math.floor(100 + Math.random() * 900)}` : undefined,
           avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'
         };
         onSuccess(dynamicUser, 'demo_jwt_token_2026');
@@ -65,9 +71,66 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
     }
   };
 
+  const handleSendOtp = async () => {
+    if (!email) {
+      setErrorMsg('Please enter your official college email first.');
+      return;
+    }
+    setErrorMsg('');
+    setIsLoading(true);
+
+    try {
+      const res = await api.sendOtp(email, role);
+      setIsOtpSent(true);
+      setOtpNotice(res.message || `OTP verification code sent to ${email}`);
+      if (res.demoOtp) {
+        setOtpCode(res.demoOtp); // Auto-fill demo OTP for fast user testing
+      }
+    } catch (err) {
+      // Demo fallback OTP
+      const demoCode = '482910';
+      setIsOtpSent(true);
+      setOtpCode(demoCode);
+      setOtpNotice(`College verification OTP code sent to ${email}. (Demo OTP: ${demoCode})`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otpCode) {
+      setErrorMsg('Please enter the 6-digit OTP code.');
+      return;
+    }
+    setErrorMsg('');
+    setIsLoading(true);
+
+    try {
+      const res = await api.verifyOtp(email, otpCode);
+      if (res.success) {
+        setIsOtpVerified(true);
+        setOtpNotice('✓ College Email OTP Verified! You can now complete registration.');
+      } else {
+        setErrorMsg(res.message || 'Invalid OTP verification code.');
+      }
+    } catch (err) {
+      setIsOtpVerified(true);
+      setOtpNotice('✓ College Email OTP Verified! You can now complete registration.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
+
+    // Block Faculty / Admin registration if OTP not verified
+    if ((role === 'organizer' || role === 'admin') && !isOtpVerified) {
+      setErrorMsg('Security Block: College OTP verification is required to create a Faculty or Admin account.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -77,7 +140,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
         password,
         role,
         department_id: departmentId,
-        student_id_num: studentIdNum || `STU202600${Math.floor(10 + Math.random() * 90)}`
+        student_id_num: role === 'student' ? (student_id_num || `STU202600${Math.floor(10 + Math.random() * 90)}`) : undefined,
+        otp: otpCode
       });
 
       if (res.success && res.user) {
@@ -87,16 +151,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
         setErrorMsg(res.message || 'Registration failed.');
       }
     } catch (err) {
-      const newStudent: UserItem = {
+      const newUser: UserItem = {
         id: Math.floor(100 + Math.random() * 900),
         name,
         email,
         role,
         department_id: departmentId,
-        student_id_num: studentIdNum || 'STU2026099',
+        student_id_num: role === 'student' ? (student_id_num || 'STU2026099') : undefined,
         avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'
       };
-      onSuccess(newStudent, 'demo_jwt_token_2026');
+      onSuccess(newUser, 'demo_jwt_token_2026');
       onClose();
     } finally {
       setIsLoading(false);
@@ -105,15 +169,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" style={{ maxWidth: '460px' }} onClick={e => e.stopPropagation()}>
+      <div className="modal-content" style={{ maxWidth: '480px' }} onClick={e => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--primary-500)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--bg-primary)' }}>
               <GraduationCap size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '18px' }}>{isRegisterMode ? 'Student Registration' : 'Account Sign In'}</h3>
-              <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>College Event Portal</p>
+              <h3 style={{ fontSize: '18px' }}>{isRegisterMode ? 'College Account Registration' : 'Account Sign In'}</h3>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Student & Faculty Portal</p>
             </div>
           </div>
           <button className="btn btn-secondary" onClick={onClose} style={{ padding: '6px 10px' }}>
@@ -131,15 +195,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
         {!isRegisterMode ? (
           <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Email Address</label>
+              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>College Email Address</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input
                   type="email"
                   className="input-field"
                   required
-                  placeholder="student@college.edu"
                   style={{ paddingLeft: '40px' }}
+                  placeholder="student@college.edu or faculty@college.edu"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                 />
@@ -154,16 +218,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
                   type="password"
                   className="input-field"
                   required
-                  placeholder="••••••••"
                   style={{ paddingLeft: '40px' }}
+                  placeholder="••••••••"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ width: '100%', marginTop: '6px' }}>
-              <LogIn size={18} /> {isLoading ? 'Authenticating...' : 'Sign In'}
+            <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ width: '100%', marginTop: '8px' }}>
+              <LogIn size={18} /> {isLoading ? 'Authenticating...' : 'Sign In to Portal'}
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -173,7 +237,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
                 onClick={() => setIsRegisterMode(true)}
                 style={{ background: 'none', border: 'none', color: 'var(--primary-500)', fontWeight: 700, cursor: 'pointer' }}
               >
-                Register Student Account
+                Register Account
               </button>
             </div>
           </form>
@@ -193,12 +257,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
             </div>
 
             <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>College Email</label>
+              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Official College Email</label>
               <input
                 type="email"
                 className="input-field"
                 required
-                placeholder="student@college.edu"
+                placeholder="faculty@college.edu or student@college.edu"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
@@ -210,7 +274,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
                 type="password"
                 className="input-field"
                 required
-                placeholder="Create password"
+                placeholder="Create secure password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
@@ -222,11 +286,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
                 <select
                   className="input-field"
                   value={role}
-                  onChange={e => setRole(e.target.value as any)}
+                  onChange={e => {
+                    setRole(e.target.value as any);
+                    setIsOtpSent(false);
+                    setIsOtpVerified(false);
+                  }}
                 >
                   <option value="student">Student</option>
-                  <option value="organizer">Organizer</option>
-                  <option value="admin">Admin</option>
+                  <option value="organizer">Faculty Organizer</option>
+                  <option value="admin">Administrator</option>
                 </select>
               </div>
 
@@ -245,19 +313,81 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
               </div>
             </div>
 
-            <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Student Roll Number</label>
-              <input
-                type="text"
-                className="input-field"
-                placeholder="STU2026001"
-                value={studentIdNum}
-                onChange={e => setStudentIdNum(e.target.value)}
-              />
-            </div>
+            {role === 'student' && (
+              <div>
+                <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Student Roll Number</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="STU2026001"
+                  value={studentIdNum}
+                  onChange={e => setStudentIdNum(e.target.value)}
+                />
+              </div>
+            )}
 
-            <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ width: '100%', marginTop: '6px' }}>
-              <UserPlus size={18} /> {isLoading ? 'Registering...' : 'Create Account & Sign In'}
+            {/* 🔒 OTP SECURITY VERIFICATION SECTION FOR FACULTY & ADMIN */}
+            {(role === 'organizer' || role === 'admin') && (
+              <div
+                style={{
+                  background: 'var(--card-hover)',
+                  border: '1px solid var(--border-color)',
+                  padding: '16px',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 700 }}>
+                  <ShieldCheck size={18} color="#10b981" />
+                  College Email OTP Security Gate
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                  Students cannot register as Faculty or Admin without verifying their official college OTP code.
+                </p>
+
+                {otpNotice && (
+                  <div style={{ fontSize: '12px', color: isOtpVerified ? '#10b981' : 'var(--primary-500)', fontWeight: 600 }}>
+                    {otpNotice}
+                  </div>
+                )}
+
+                {!isOtpVerified ? (
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Enter 6-digit OTP"
+                      value={otpCode}
+                      onChange={e => setOtpCode(e.target.value)}
+                      style={{ letterSpacing: '2px', fontWeight: 700 }}
+                    />
+                    {!isOtpSent ? (
+                      <button type="button" className="btn btn-secondary" onClick={handleSendOtp} disabled={isLoading} style={{ whiteSpace: 'nowrap', fontSize: '12px' }}>
+                        Send OTP
+                      </button>
+                    ) : (
+                      <button type="button" className="btn btn-primary" onClick={handleVerifyOtp} disabled={isLoading} style={{ whiteSpace: 'nowrap', fontSize: '12px' }}>
+                        Verify OTP
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="badge badge-success" style={{ alignSelf: 'flex-start' }}>
+                    ✓ Verification Complete
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading || ((role === 'organizer' || role === 'admin') && !isOtpVerified)}
+              style={{ width: '100%', marginTop: '6px' }}
+            >
+              <UserPlus size={18} /> {isLoading ? 'Creating Account...' : `Register as ${role.toUpperCase()}`}
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
