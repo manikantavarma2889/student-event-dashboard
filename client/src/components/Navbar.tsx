@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { Search, Bell, Sun, Moon, Shield, User, Award, CheckCircle, LogIn, LogOut, ChevronDown } from 'lucide-react';
+import { 
+  Bell, 
+  Sun, 
+  Moon, 
+  User, 
+  LogOut, 
+  LogIn, 
+  CheckCircle,
+  Award,
+  Shield
+} from 'lucide-react';
 import { UserItem } from '../services/api.ts';
 
 interface NavbarProps {
   currentUser: UserItem | null;
-  onRoleSwitch: (role: 'admin' | 'organizer' | 'student') => void;
+  onRoleSwitch: (role: 'student' | 'organizer' | 'admin') => void;
   onOpenLoginModal: () => void;
   onLogout: () => void;
-  theme: 'dark' | 'light';
+  theme: string;
   toggleTheme: () => void;
-  onSearch?: (q: string) => void;
-  notificationsCount?: number;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -19,34 +27,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLoginModal,
   onLogout,
   theme,
-  toggleTheme,
-  onSearch,
-  notificationsCount = 2
+  toggleTheme
 }) => {
   const [showNotifs, setShowNotifs] = useState(false);
-  const [searchVal, setSearchVal] = useState('');
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchVal(e.target.value);
-    if (onSearch) onSearch(e.target.value);
-  };
+  const notificationsCount = 2;
 
   return (
     <>
-      {/* Main Top Navigation */}
       <nav className="top-navbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1, maxWidth: '420px' }}>
-          <div style={{ position: 'relative', width: '100%' }}>
-            <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-            <input
-              type="text"
-              placeholder="Search events, workshops, organizers..."
-              className="input-field"
-              style={{ paddingLeft: '42px' }}
-              value={searchVal}
-              onChange={handleSearchChange}
-            />
-          </div>
+        {/* Page Context Branding Title */}
+        <div>
+          <h3 style={{ fontSize: '18px', fontWeight: 800 }}>CampusConnect Portal</h3>
+          <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+            Student Event Management & Analytics Platform
+          </p>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -125,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* User Profile Pill & Login / Logout Button */}
+          {/* User Profile Pill & Role Switcher */}
           {currentUser ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div
@@ -152,14 +146,33 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
               </div>
 
-              <button
-                className="btn btn-secondary"
-                onClick={onOpenLoginModal}
-                style={{ padding: '8px 12px', fontSize: '12px' }}
-                title="Switch User / Login as Another Student"
-              >
-                <LogIn size={16} /> Switch User / Login
-              </button>
+              {/* Quick Role Portal Switcher Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--card-hover)', padding: '4px', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-color)' }}>
+                <button
+                  className={`btn ${currentUser.role === 'student' ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => onRoleSwitch('student')}
+                  style={{ padding: '4px 12px', fontSize: '11px', borderRadius: 'var(--radius-full)' }}
+                  title="Switch to Student Portal"
+                >
+                  Student
+                </button>
+                <button
+                  className={`btn ${currentUser.role === 'organizer' ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => onRoleSwitch('organizer')}
+                  style={{ padding: '4px 12px', fontSize: '11px', borderRadius: 'var(--radius-full)' }}
+                  title="Switch to Faculty Organizer Portal"
+                >
+                  Faculty Organizer
+                </button>
+                <button
+                  className={`btn ${currentUser.role === 'admin' ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => onRoleSwitch('admin')}
+                  style={{ padding: '4px 12px', fontSize: '11px', borderRadius: 'var(--radius-full)' }}
+                  title="Switch to Admin Portal"
+                >
+                  Admin
+                </button>
+              </div>
 
               <button
                 className="btn btn-secondary"
