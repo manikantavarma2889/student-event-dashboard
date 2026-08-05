@@ -46,7 +46,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
       const demoUsers: Record<string, UserItem> = {
         'student@college.edu': { id: 5, name: 'Student Account', email: 'student@college.edu', role: 'student', department_id: 1, student_id_num: 'STU2026001', avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150' },
         'organizer@college.edu': { id: 2, name: 'Faculty Organizer', email: 'organizer@college.edu', role: 'organizer', department_id: 1, avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150' },
-        'admin@college.edu': { id: 1, name: 'College Administrator', email: 'admin@college.edu', role: 'admin', department_id: 1, avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150' }
+        'admin@college.edu': { id: 1, name: 'College Administrator', email: 'admin@college.edu', role: 'admin', department_id: 1, avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150' },
+        'saivarma1594@gmail.com': { id: 10, name: 'Sai Varma (Faculty Admin)', email: 'saivarma1594@gmail.com', role: 'organizer', department_id: 1, avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150' }
       };
 
       const matched = demoUsers[email.toLowerCase()];
@@ -257,12 +258,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSucce
             </div>
 
             <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Official College Email</label>
+              <label style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Official College / Admin Email</label>
               <input
                 type="email"
                 className="input-field"
                 required
-                placeholder="faculty@college.edu or student@college.edu"
+                placeholder="saivarma1594@gmail.com or faculty@college.edu"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
