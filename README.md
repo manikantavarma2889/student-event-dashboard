@@ -1,10 +1,5 @@
 # 🎓 CampusConnect — Student Event Management & Analytics Platform
 
-[![Vercel Deployment](https://img.shields.io/badge/Vercel-Frontend-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
-[![Render Backend](https://img.shields.io/badge/Render-REST_API-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com)
-[![PostgreSQL Supabase](https://img.shields.io/badge/PostgreSQL-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-React_&_Node-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-
 A modern, production-ready **Student Event Management & Analytics Platform** designed for colleges and universities. Built with **React.js**, **TypeScript**, **Node.js**, **Express.js**, and **PostgreSQL (Supabase)**.
 
 ---
