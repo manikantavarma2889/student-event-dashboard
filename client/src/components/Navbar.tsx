@@ -184,9 +184,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
           ) : (
-            <button className="btn btn-primary" onClick={onOpenLoginModal}>
-              <LogIn size={18} /> Sign In / Register
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => onRoleSwitch('organizer')}
+                style={{ padding: '8px 16px', borderRadius: 'var(--radius-full)', fontSize: '13px', fontWeight: 700 }}
+              >
+                📋 Faculty Organizer Portal
+              </button>
+
+              <button className="btn btn-primary" onClick={onOpenLoginModal} style={{ borderRadius: 'var(--radius-full)' }}>
+                <LogIn size={18} /> Student Sign In / Register
+              </button>
+            </div>
           )}
         </div>
       </nav>
