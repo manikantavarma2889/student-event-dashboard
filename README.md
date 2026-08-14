@@ -142,7 +142,3 @@ npm start
 5. Set **Start Command**: `npm start`
 6. Add Environment Variables (`NODE_ENV`, `PORT`, `JWT_SECRET`, `DATABASE_URL`).
 
----
-
-## 📜 License
-This project is open-source and available under the [MIT License](LICENSE).
