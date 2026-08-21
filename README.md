@@ -2,12 +2,6 @@
 
 # 🎓 CampusConnect — Student Event Management & Analytics Platform
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=gold)](https://github.com/manikantavarma2889/student-event-dashboard/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=orange)](https://github.com/manikantavarma2889/student-event-dashboard/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=red)](https://github.com/manikantavarma2889/student-event-dashboard/issues)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=blue)](https://github.com/manikantavarma2889/student-event-dashboard/commits/main)
-
 ### Tech Stack
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
