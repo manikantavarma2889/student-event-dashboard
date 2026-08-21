@@ -1,6 +1,30 @@
+<div align="center">
+
 # 🎓 CampusConnect — Student Event Management & Analytics Platform
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=gold)](https://github.com/manikantavarma2889/student-event-dashboard/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=orange)](https://github.com/manikantavarma2889/student-event-dashboard/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=red)](https://github.com/manikantavarma2889/student-event-dashboard/issues)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/manikantavarma2889/student-event-dashboard?style=for-the-badge&color=blue)](https://github.com/manikantavarma2889/student-event-dashboard/commits/main)
+
+### Tech Stack
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=3ECF8E)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+
+<br/>
+
 A modern, production-ready **Student Event Management & Analytics Platform** designed for colleges and universities. Built with **React.js**, **TypeScript**, **Node.js**, **Express.js**, and **PostgreSQL (Supabase)**.
+
+</div>
 
 ---
 
