@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import { QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import './accessibility.css';
 import App from './App.js';
+import { queryClient } from './queryClient';
 
 function AccessibilityBootstrap() {
   useEffect(() => {
@@ -28,7 +30,9 @@ function AccessibilityBootstrap() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AccessibilityBootstrap />
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <AccessibilityBootstrap />
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );

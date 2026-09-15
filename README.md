@@ -8,6 +8,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logo=recharts&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=3ECFBB)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)
@@ -16,7 +19,7 @@
 
 <br/>
 
-A modern, production-ready **Student Event Management & Analytics Platform** designed for colleges and universities. Built with **React.js**, **TypeScript**, **Node.js**, **Express.js**, and **PostgreSQL (Supabase)**.
+A modern, production-ready **Student Event Management & Analytics Platform** designed for colleges and universities. Built with **React.js**, **TypeScript**, **Node.js**, **Express.js**, and **PostgreSQL (Supabase)**, with **TanStack Query** for server-state management, **Recharts** for analytics visualization, and **Playwright** for end-to-end browser testing.
 
 </div>
 
@@ -38,6 +41,8 @@ A modern, production-ready **Student Event Management & Analytics Platform** des
 
 ### 📈 3. Centralized Admin Dashboard
 - **Executive Analytics**: Track platform users, event completion rates, departments, and participation trends.
+- **Interactive Data Visualizations**: Present monthly registration/attendance trends and department participation using Recharts.
+- **Server-State Data Fetching**: Use TanStack Query to retrieve analytics data with caching, controlled refetching, and retry behavior.
 - **User Role Management**: Manage permissions and assign `student`, `organizer`, and `admin` roles.
 - **Department Administration**: Oversee academic departments and organizer event portfolios.
 
@@ -81,10 +86,40 @@ Accessibility documentation and verification scenarios are available in [`ACCESS
 
 | Layer | Technologies Used |
 | :--- | :--- |
-| **Frontend Client** | React 18, TypeScript, Lucide Icons, Custom CSS Design System |
+| **Frontend Client** | React 18, TypeScript, React Router, Lucide Icons, Custom CSS Design System |
+| **Server State & API Data** | TanStack Query, REST API client |
+| **Data Visualization** | Recharts (Bar and Pie charts with responsive layouts and tooltips) |
+| **Frontend Testing** | Playwright (Chromium end-to-end tests) |
 | **Backend REST API** | Node.js, Express.js, TypeScript, JWT Auth, Bcrypt Hashing, Helmet |
 | **Database** | PostgreSQL (Normalized Relational Schema on Supabase) |
 | **Deployment** | Vercel (Frontend SPA) + Render (Node.js API Web Service) |
+
+---
+
+## 🧪 Frontend Testing
+
+The frontend includes a Playwright end-to-end testing setup for validating important user-facing flows in a real browser environment.
+
+### Playwright Configuration
+
+- Chromium browser project
+- Local frontend base URL: `http://127.0.0.1:3000`
+- Automatic frontend startup through the Playwright web server configuration
+- CI-friendly retries and worker settings
+- HTML test reports
+- Trace and screenshot capture for failed tests
+
+Run the end-to-end tests from the `client` directory:
+
+```bash
+npm run e2e
+```
+
+For the interactive Playwright UI:
+
+```bash
+npm run e2e:ui
+```
 
 ---
 
@@ -98,20 +133,24 @@ student-event-dashboard/
 │   │   ├── components/         # Reusable UI Components
 │   │   ├── views/              # Event, Student, Organizer & Admin views
 │   │   ├── services/           # REST API HTTP Client Service
+│   │   ├── queryClient.ts      # Shared TanStack Query configuration
 │   │   ├── App.js              # Main React application
-│   │   ├── index.js            # Application entry point
+│   │   ├── index.js            # Application entry point + QueryClientProvider
 │   │   ├── index.css           # Main design system
 │   │   └── accessibility.css   # Accessibility styles and interaction support
+│   ├── e2e/
+│   │   └── campusconnect.spec.ts # Playwright end-to-end tests
+│   ├── playwright.config.ts    # Playwright test configuration
 │   └── vercel.json              # Vercel SPA Routing Configuration
 ├── server/                     # Node.js + Express + TypeScript REST API
 │   ├── db/                     # Relational Database SQL Schemas & Seeds
 │   ├── src/
 │   │   ├── controllers/        # REST API Controllers
 │   │   ├── middleware/         # JWT Auth, Error Handler, Rate Limiter
-│   │   ├── routes/              # Express API Endpoint Routes
+│   │   ├── routes/             # Express API Endpoint Routes
 │   │   └── index.ts            # Server Entry Point
 │   └── tsconfig.json
-├── ACCESSIBILITY.md             # Accessibility engineering documentation
+├── ACCESSIBILITY.md            # Accessibility engineering documentation
 ├── vercel.json
 ├── render.yaml
 └── README.md
@@ -186,6 +225,8 @@ npm start
 4. Set **Build Command** to `npm install && npm run build`.
 5. Set **Start Command** to `npm start`.
 6. Configure `NODE_ENV`, `PORT`, `JWT_SECRET`, and `DATABASE_URL` environment variables.
+
+The project uses **Vercel + Render** for deployment; GitHub Pages is not part of the deployment setup.
 
 ---
 
