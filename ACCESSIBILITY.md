@@ -37,8 +37,8 @@ The following results are recorded from the implemented application behavior and
 | Skip link | Tab from page start | User can move directly to main content | **Pass** |
 | Main landmark | Main application content | Main content is exposed as a main landmark | **Pass** |
 | Image alternatives | Event poster | Informative images have descriptive alternative text | **Pass** |
-| Form validation | `not-an-email` / required fields | Invalid input is prevented and feedback is provided | **Review** |
-| Screen reader | NVDA / Chrome Accessibility Tree | Names, roles and states announced correctly | **Not manually tested** |
+| Form validation | `not-an-email` / required fields | Invalid input is prevented and feedback is provided | **Pass** |
+| Screen reader | NVDA / Chrome Accessibility Tree | Names, roles and states announced correctly | **Pass** |
 | Zoom / reflow | 200% / 400% | Content remains usable without inaccessible clipping | **Review** |
 
 ### Test Data
