@@ -9,7 +9,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=3ECF8E)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=3ECFBB)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
@@ -25,29 +25,55 @@ A modern, production-ready **Student Event Management & Analytics Platform** des
 ## 🌟 Key Features & Role Capabilities
 
 ### 🎓 1. Student Portal
-- **Interactive Event Discovery**: Filter events by category (Hackathons, Workshops, Cultural Fests, Seminars) and academic departments.
+- **Interactive Event Discovery**: Filter events by category and academic department.
 - **Instant Event Passes & QR Tokens**: Register for campus events and generate digital attendance QR tokens.
 - **Participation History & Digital Certificates Vault**: View event completion records, verify authenticity, and preview/download PDF certificates.
-- **Live Notifications**: Receive real-time alerts for upcoming events and check-in verifications.
+- **Live Notifications**: Receive alerts for upcoming events and check-in verification.
 
 ### 📋 2. Faculty Organizer Portal
-- **Event Lifecycle Management**: Create, update, publish, or delete campus events with location, capacity, and custom poster URLs.
-- **Registration Tracking & Rosters**: Track live student registration counts and export attendance rosters.
-- **QR Code & Manual Attendance Check-In**: Scan student QR passes or mark attendance manually in real time.
-- **Automated Certificate Generation**: Automatically issue digital completion certificates upon check-in.
+- **Event Lifecycle Management**: Create, update, publish, or delete campus events with location, capacity, and poster URLs.
+- **Registration Tracking & Rosters**: Track student registration counts and attendance rosters.
+- **QR Code & Manual Attendance Check-In**: Scan student QR passes or mark attendance manually.
+- **Automated Certificate Generation**: Issue digital completion certificates after check-in.
 
 ### 📈 3. Centralized Admin Dashboard
-- **Executive Analytics**: Track total platform users, event completion rates, top active departments, and monthly participation trends.
-- **User Role Management**: Manage permissions and assign roles (`student`, `organizer`, `admin`).
+- **Executive Analytics**: Track platform users, event completion rates, departments, and participation trends.
+- **User Role Management**: Manage permissions and assign `student`, `organizer`, and `admin` roles.
 - **Department Administration**: Oversee academic departments and organizer event portfolios.
+
+---
+
+## ♿ Accessibility Engineering
+
+CampusConnect includes accessibility-focused frontend engineering aligned with **WCAG 2.2 principles** and common **WAI-ARIA** practices.
+
+### Accessibility Features
+
+- Semantic navigation landmarks and page structure
+- Keyboard-operable sidebar navigation using native buttons
+- Skip-to-main-content navigation
+- Visible `:focus-visible` indicators
+- Accessible names for icon-only controls
+- `aria-current` and `aria-pressed` for navigation and state
+- Event dialogs using `role="dialog"` and `aria-modal`
+- Escape-to-close dialog behavior and initial dialog focus
+- Descriptive alternative text for event imagery
+- Semantic event-detail descriptions
+- Live status messaging for registration state
+- Reduced-motion support with `prefers-reduced-motion`
+- Forced-colors/high-contrast support
+- Responsive layouts designed for zoom and reflow
+- Theme controls with descriptive accessible states
+
+Accessibility documentation and verification scenarios are available in [`ACCESSIBILITY.md`](./ACCESSIBILITY.md).
 
 ---
 
 ## 🎨 Visual Design & Theme Engine
 
-- **High-Contrast Dark & Light Mode**: Seamless toggle between a crisp white interface and a deep obsidian black interface.
-- **Animated Splash Screen**: 2-second initial portal loading transition.
-- **Modern Glassmorphism & Micro-animations**: Built with custom HSL tokens, subtle backdrop blurs, and responsive grid layouts.
+- **High-Contrast Dark & Light Mode**: Seamless toggle between light and dark interfaces.
+- **Responsive Design System**: Responsive layouts for desktop and smaller screens.
+- **Modern UI**: Glassmorphism, custom design tokens, subtle transitions, and responsive grid layouts.
 
 ---
 
@@ -58,36 +84,37 @@ A modern, production-ready **Student Event Management & Analytics Platform** des
 | **Frontend Client** | React 18, TypeScript, Lucide Icons, Custom CSS Design System |
 | **Backend REST API** | Node.js, Express.js, TypeScript, JWT Auth, Bcrypt Hashing, Helmet |
 | **Database** | PostgreSQL (Normalized Relational Schema on Supabase) |
-| **Deployment** | Vercel (Frontend Static & SPA) + Render (Node.js API Web Service) |
+| **Deployment** | Vercel (Frontend SPA) + Render (Node.js API Web Service) |
 
 ---
 
 ## 📂 Project Repository Structure
 
-```
+```text
 student-event-dashboard/
 ├── client/                     # React + TypeScript Frontend
 │   ├── public/                 # Static assets & HTML template
 │   ├── src/
-│   │   ├── components/         # Reusable UI Components (Navbar, Sidebar, Modals)
-│   │   ├── views/              # View Screens (EventBrowser, StudentDashboard, AdminAnalytics, etc.)
+│   │   ├── components/         # Reusable UI Components
+│   │   ├── views/              # Event, Student, Organizer & Admin views
 │   │   ├── services/           # REST API HTTP Client Service
-│   │   ├── App.js              # Main React App Entry & Routing
-│   │   └── index.css           # High-Contrast Black & White CSS Design System
-│   └── vercel.json             # Vercel SPA Routing Configuration
+│   │   ├── App.js              # Main React application
+│   │   ├── index.js            # Application entry point
+│   │   ├── index.css           # Main design system
+│   │   └── accessibility.css   # Accessibility styles and interaction support
+│   └── vercel.json              # Vercel SPA Routing Configuration
 ├── server/                     # Node.js + Express + TypeScript REST API
 │   ├── db/                     # Relational Database SQL Schemas & Seeds
-│   │   ├── schema.sql          # PostgreSQL normalized tables & indexes
-│   │   └── seed.sql            # Initial seed dataset
 │   ├── src/
-│   │   ├── controllers/        # REST API Controllers (Auth, Events, Registrations, Attendance, etc.)
+│   │   ├── controllers/        # REST API Controllers
 │   │   ├── middleware/         # JWT Auth, Error Handler, Rate Limiter
-│   │   ├── routes/             # Express API Endpoint Routes
+│   │   ├── routes/              # Express API Endpoint Routes
 │   │   └── index.ts            # Server Entry Point
-│   └── tsconfig.json           # TypeScript Server Config
-├── vercel.json                 # Monorepo Vercel Deployment Config
-├── render.yaml                 # Render Blueprint Deployment Config
-└── README.md                   # Project Documentation
+│   └── tsconfig.json
+├── ACCESSIBILITY.md             # Accessibility engineering documentation
+├── vercel.json
+├── render.yaml
+└── README.md
 ```
 
 ---
@@ -116,27 +143,26 @@ student-event-dashboard/
 - **PostgreSQL** instance (or Supabase connection string)
 
 ### 2. Install Dependencies
+
 ```bash
-# Clone the repository
 git clone https://github.com/manikantavarma2889/student-event-dashboard.git
 cd student-event-dashboard
 
-# Install Client Dependencies
 cd client
 npm install --legacy-peer-deps
 
-# Install Server Dependencies
 cd ../server
 npm install
 ```
 
 ### 3. Run Development Servers
+
 ```bash
-# Start Backend Express REST API (Runs on http://localhost:5000)
+# Backend API — http://localhost:5000
 cd server
 npm run dev
 
-# Start Frontend React App (Runs on http://localhost:3000)
+# Frontend — http://localhost:3000
 cd client
 npm start
 ```
@@ -146,17 +172,40 @@ npm start
 ## 🚀 Deployment Guide
 
 ### Deploying Frontend to Vercel
-1. Import repository `student-event-dashboard` into **Vercel**.
+
+1. Import `student-event-dashboard` into Vercel.
 2. Set **Root Directory** to `client`.
-3. Set Environment Variable:
-   - `REACT_APP_API_URL` = `https://<your-render-backend-url>/api`
-4. Click **Deploy**.
+3. Set `REACT_APP_API_URL` to your deployed backend API URL.
+4. Deploy the frontend.
 
 ### Deploying Backend API to Render
-1. Create a **New Web Service** on **Render.com**.
-2. Connect your GitHub repository `student-event-dashboard`.
-3. Set **Root Directory** to `server`.
-4. Set **Build Command**: `npm install && npm run build`
-5. Set **Start Command**: `npm start`
-6. Add Environment Variables (`NODE_ENV`, `PORT`, `JWT_SECRET`, `DATABASE_URL`).
 
+1. Create a new Web Service on Render.
+2. Connect the GitHub repository.
+3. Set **Root Directory** to `server`.
+4. Set **Build Command** to `npm install && npm run build`.
+5. Set **Start Command** to `npm start`.
+6. Configure `NODE_ENV`, `PORT`, `JWT_SECRET`, and `DATABASE_URL` environment variables.
+
+---
+
+## 📋 Accessibility Verification
+
+The repository includes an accessibility verification checklist covering:
+
+- Keyboard navigation
+- Dialog keyboard interaction
+- Screen-reader/accessibility-tree review
+- Form validation
+- Registration status announcements
+- Browser zoom and reflow
+- High-contrast/forced-colors behavior
+- Reduced-motion behavior
+
+See [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) for the detailed verification scenarios and test values.
+
+---
+
+## 📄 License
+
+This project is developed as a portfolio and academic software engineering project.
